@@ -1,92 +1,607 @@
-# challenge-goapi
+# Aplikasi Enigma Laundry
 
+### Deskripsi
 
+Setelah menyelesaikan pembelajaran tentang Go API, Anda ditugaskan oleh manajemen Enigma Laundry (EL) untuk membuat sebuah aplikasi sederhana berbasis API untuk mencatat transaksi di tokonya.
 
-## Getting started
+![logo](./asset/Enigma-Laundry.png)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Fitur-fitur yang diminta oleh manajemen EL adalah:
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+1.  Struktur/Design Database yang memenuhi kaidah normalisasi berdasarkan nota dibawah ini dengan kriteria sbb :
 
-## Add your files
+        - Hasil design dalam bentuk file Script DDL Postgre SQL
+        - Design database minimal memiliki 2 tabel master dan 1 tabel transaksi
+        - Sediakan sample data dalam bentuk Script DML Postgre SQL
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+2.  Aplikasi berbasis API menggunakan bahasa pemrograman Golang dengan kriteria sbb :
 
+        - Aplikasi memiliki fitur untuk melakukan GET, POST, PUT, dan DELETE pada tabel master
+          1. Manajemen Customer
+          2. Manajemen Produk
+          3. Manajemen Employee
+        - Aplikasi memiliki fitur untuk melakukan GET dan POST pada table Transaksi
+          1. Manajemen Transaksi
+        - Setiap fitur master wajib memiliki minimal 2 jenis validasi yang berbeda
+        - Setiap transaksi master wajib memiliki minimal 4 jenis validasi yang berbeda
+
+3.  Dokumentasi cara menjalankan aplikasi dan penggunaan aplikasi dalam bentuk readme.md atau dokumen ektensi word atau pdf
+
+---
+
+## API Spec
+
+### Customer API
+
+#### Create Customer
+
+Request :
+
+- Method : `POST`
+- Endpoint : `/customers`
+- Header :
+  - Content-Type : application/json
+  - Accept : application/json
+- Body :
+
+```json
+{
+  "name": "string",
+  "phoneNumber": "string",
+  "address": "string"
+}
 ```
-cd existing_repo
-git remote add origin https://git.enigmacamp.com/enigma-20/purkonuddin/challenge-goapi.git
-git branch -M master
-git push -uf origin master
+
+Response :
+
+- Status : 201 Created
+- Body :
+
+```json
+{
+  "message": "string",
+  "data": {
+    "id": "string",
+    "name": "string",
+    "phoneNumber": "string",
+    "address": "string"
+  }
+}
 ```
 
-## Integrate with your tools
+#### Get Customer
 
-- [ ] [Set up project integrations](https://git.enigmacamp.com/enigma-20/purkonuddin/challenge-goapi/-/settings/integrations)
+Request :
 
-## Collaborate with your team
+- Method : GET
+- Endpoint : `/customers/:id`
+- Header :
+  - Accept : application/json
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Response :
 
-## Test and Deploy
+- Status : 200 OK
+- Body :
 
-Use the built-in continuous integration in GitLab.
+```json
+{
+  "message": "string",
+  "data": {
+    "id": "string",
+    "name": "string",
+    "phoneNumber": "string",
+    "address": "string"
+  }
+}
+```
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+#### Update Customer
 
-***
+Request :
 
-# Editing this README
+- Method : PUT
+- Endpoint : `/customers/:id`
+- Header :
+  - Content-Type : application/json
+  - Accept : application/json
+- Body :
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+```json
+{
+  "name": "string",
+  "phoneNumber": "string",
+  "address": "string"
+}
+```
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Response :
 
-## Name
-Choose a self-explaining name for your project.
+- Status : 200 OK
+- Body :
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+```json
+{
+  "message": "string",
+  "data": {
+    "id": "string",
+    "name": "string",
+    "phoneNumber": "string",
+    "address": "string"
+  }
+}
+```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+#### Delete Customer
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Request :
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+- Method : DELETE
+- Endpoint : `/customers/:id`
+- Header :
+  - Accept : application/json
+- Body :
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Response :
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+- Status : 200 OK
+- Body :
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+```json
+{
+  "message": "string",
+  "data": "OK"
+}
+```
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+### Employee API
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+#### Create Employee
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+Request :
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+- Method : `POST`
+- Endpoint : `/employees`
+- Header :
+  - Content-Type : application/json
+  - Accept : application/json
+- Body :
 
-## License
-For open source projects, say how it is licensed.
+```json
+{
+  "name": "string",
+  "phoneNumber": "string",
+  "address": "string"
+}
+```
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Response :
+
+- Status : 201 Created
+- Body :
+
+```json
+{
+  "message": "string",
+  "data": {
+    "id": "string",
+    "name": "string",
+    "phoneNumber": "string",
+    "address": "string"
+  }
+}
+```
+
+#### Get Employee
+
+Request :
+
+- Method : GET
+- Endpoint : `/employees/:id`
+- Header :
+  - Accept : application/json
+
+Response :
+
+- Status : 200 OK
+- Body :
+
+```json
+{
+  "message": "string",
+  "data": {
+    "id": "string",
+    "name": "string",
+    "phoneNumber": "string",
+    "address": "string"
+  }
+}
+```
+
+#### Update Employee
+
+Request :
+
+- Method : PUT
+- Endpoint : `/employees/:id`
+- Header :
+  - Content-Type : application/json
+  - Accept : application/json
+- Body :
+
+```json
+{
+  "name": "string",
+  "phoneNumber": "string",
+  "address": "string"
+}
+```
+
+Response :
+
+- Status : 200 OK
+- Body :
+
+```json
+{
+  "message": "string",
+  "data": {
+    "id": "string",
+    "name": "string",
+    "phoneNumber": "string",
+    "address": "string"
+  }
+}
+```
+
+#### Delete Employee
+
+Request :
+
+- Method : DELETE
+- Endpoint : `/employees/:id`
+- Header :
+  - Accept : application/json
+- Body :
+
+Response :
+
+- Status : 200 OK
+- Body :
+
+```json
+{
+  "message": "string",
+  "data": "OK"
+}
+```
+
+### Product API
+
+#### Create Product
+
+Request :
+
+- Method : POST
+- Endpoint : `/products`
+- Header :
+  - Content-Type : application/json
+  - Accept : application/json
+- Body :
+
+```json
+{
+	"name": "string",
+  "price": int,
+  "unit": "string" (satuan product,cth: Buah atau Kg)
+}
+```
+
+Response :
+
+- Status Code: 201 Created
+- Body:
+
+```json
+{
+	"message": "string",
+	"data": {
+		"id": "string",
+		"name": "string",
+		"price": int,
+		"unit": "string" (satuan product,cth: Buah atau Kg)
+	}
+}
+```
+
+#### List Product
+
+Request :
+
+- Method : GET
+- Endpoint : `/products`
+  - Header :
+  - Accept : application/json
+- Query Param :
+  - productName : string `optional`,
+
+Response :
+
+- Status Code : 200 OK
+- Body:
+
+```json
+{
+	"message": "string",
+	"data": [
+		{
+			"id": "string",
+			"name": "string",
+			"price": int,
+			"unit": "string" (satuan product,cth: Buah atau Kg)
+		},
+		{
+			"id": "string",
+			"name": "string",
+			"price": int,
+			"unit": "string" (satuan product,cth: Buah atau Kg)
+		}
+	]
+}
+```
+
+#### Product By Id
+
+Request :
+
+- Method : GET
+- Endpoint : `/products/:id`
+- Header :
+  - Accept : application/json
+
+Response :
+
+- Status Code: 200 OK
+- Body :
+
+```json
+{
+	"message": "string",
+	"data": {
+		"id": "string",
+		"name": "string",
+		"price": int,
+		"unit": "string" (satuan product,cth: Buah atau Kg)
+	}
+}
+```
+
+#### Update Product
+
+Request :
+
+- Method : PUT
+- Endpoint : `/products/:id`
+- Header :
+  - Content-Type : application/json
+  - Accept : application/json
+- Body :
+
+```json
+{
+	"name": "string",
+	"price": int,
+	"unit": "string" (satuan product,cth: Buah atau Kg)
+}
+```
+
+Response :
+
+- Status Code: 200 OK
+- Body :
+
+```json
+{
+	"message": "string",
+	"data": {
+		"id": "string",
+		"name": "string",
+		"price": int,
+		"unit": "string" (satuan product,cth: Buah atau Kg)
+	}
+}
+```
+
+#### Delete Product
+
+Request :
+
+- Method : DELETE
+- Endpoint : `/products/:id`
+- Header :
+  - Accept : application/json
+- Body :
+
+Response :
+
+- Status : 200 OK
+- Body :
+
+```json
+{
+  "message": "string",
+  "data": "OK"
+}
+```
+
+### Transaction API
+
+#### Create Transaction
+
+Request :
+
+- Method : POST
+- Endpoint : `/transactions`
+- Header :
+  - Content-Type : application/json
+  - Accept : application/json
+- Body :
+
+```json
+{
+	"billDate": "string",
+	"entryDate": "string",
+	"finishDate": "string",
+	"employeeId": "string",
+	"customerId": "string",
+	"billDetails": [
+		{
+			"productId": "string",
+			"qty": int
+		}
+	]
+}
+```
+
+Request :
+
+- Status Code: 201 Created
+- Body :
+
+```json
+{
+	"message": "string",
+	"data":  {
+		"id":  "string",
+		"billDate":  "string",
+		"entryDate":  "string",
+		"finishDate":  "string",
+		"employeeId":  "string",
+		"customerId":  "string",
+		"billDetails":  [
+			{
+				"id":	"string",
+				"billId":  "string",
+				"productId":  "string",
+				"productPrice": int,
+				"qty": int
+			}
+		]
+	}
+}
+```
+
+#### Get Transaction
+
+Request :
+
+- Method : GET
+- Endpoint : `/transactions/:id_bill`
+- Header :
+  - Accept : application/json
+- Body :
+
+Response :
+
+- Status Code: 200 OK
+- Body :
+
+```json
+{
+	"message": "string",
+  "data": {
+    "id": "string",
+    "billDate": "string",
+    "entryDate": "string",
+    "finishDate": "string",
+    "employee": {
+      "id": "string",
+      "name": "string",
+      "phoneNumber": "string",
+      "address": "string"
+    },
+    "customer": {
+      "id": "string",
+      "name": "string",
+      "phoneNumber": "string",
+      "address": "string"
+    },
+    "billDetails": [
+      {
+        "id": "string",
+        "billId": "string",
+        "product": {
+          "id": "string",
+          "name": "string",
+          "price": int,
+          "unit": "string" (satuan product,cth: Buah atau Kg)
+        },
+        "productPrice": int,
+        "qty": int
+      }
+    ],
+    "totalBill": int
+  }
+}
+```
+
+#### List Transaction
+
+Pattern string date : `dd-MM-yyyy`
+
+Request :
+
+- Method : GET
+- Endpoint : `/transactions`
+- Header :
+  - Accept : application/json
+- Query Param :
+  - startDate : string `optional`
+  - endDate : string `optional`
+  - productName : string `optional`
+- Body :
+
+Response :
+
+- Status Code: 200 OK
+- Body :
+
+```json
+{
+	"message": "string",
+  "data": [
+    {
+      "id": "string",
+      "billDate": "string",
+      "entryDate": "string",
+      "finishDate": "string",
+      "employee": {
+        "id": "string",
+        "name": "string",
+        "phoneNumber": "string",
+        "address": "string"
+      },
+      "customer": {
+        "id": "string",
+        "name": "string",
+        "phoneNumber": "string",
+        "address": "string"
+      },
+      "billDetails": [
+        {
+          "id": "string",
+          "billId": "string",
+          "product": {
+            "id": "string",
+            "name": "string",
+            "price": int,
+            "unit": "string" (satuan product,cth: Buah atau Kg)
+          },
+          "productPrice": int,
+          "qty": int
+        }
+      ],
+      "totalBill": int
+    }
+  ]
+}
+```

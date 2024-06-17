@@ -1,4 +1,4 @@
-CREATE DATABASE enigmalaundry;
+CREATE DATABASE dev_enigmaLaundry;
 
 CREATE TABLE ms_customer(
 id SERIAL,
@@ -10,11 +10,14 @@ PRIMARY KEY(id));
 CREATE TABLE ms_employee(
 id SERIAL,
 name VARCHAR(100) NOT NULL,
-password VARCHAR,
-email VARCHAR(100) NOT NULL,
 phoneNumber VARCHAR(100) NOT NULL,
+address VARCHAR(100), 
+email VARCHAR(100) NOT NULL,
+password VARCHAR,
 department VARCHAR(100) NOT NULL,
 PRIMARY KEY(id));
+
+
 
 CREATE TABLE ms_products(
 id SERIAL,
@@ -39,9 +42,8 @@ CREATE TABLE tx_billDetails(
 id SERIAL,
 billId VARCHAR NOT NULL,
 product INT NOT NULL,
+productsPrice INT NOT NULL, 
 qty INT NOT NULL, 
-price INT NOT NULL,
-sub_total INT NOT NULL,
 PRIMARY KEY(id),
 FOREIGN KEY(billId) REFERENCES tx_bill(billId),
 FOREIGN KEY(product) REFERENCES ms_products(id));

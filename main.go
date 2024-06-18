@@ -8,6 +8,7 @@ import (
 	"challenge-goapi/customer"
 	"challenge-goapi/employee"
 	"challenge-goapi/middleware"
+	"challenge-goapi/product"
 )
 
 var db = config.ConnectDB()
@@ -34,6 +35,14 @@ func main() {
 			customerGroup.POST("/", customer.CreateCustomer)
 			customerGroup.PUT("/:id", customer.UpdateCustomer)
 			customerGroup.DELETE("/:id", customer.DeleteCustomer)
+		}
+		productGroup := api.Group("/products")
+		{
+			productGroup.GET("/", product.GetProducts)
+			productGroup.GET("/:id", product.GetProduct)
+			productGroup.POST("/", product.CreateProduct)
+			productGroup.PUT("/:id", product.UpdateProduct)
+			productGroup.DELETE("/:id", product.DeleteProduct)
 		}
 
 	}

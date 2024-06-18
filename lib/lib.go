@@ -33,6 +33,14 @@ func GenerateToken(employee *entity.Employee) (string, error) {
 	return tokenString, nil
 }
 
+// validate price
+func ValidatePrice(n int) error {
+	if n < 0 {
+		return errors.New("price must be greater than or equal to 0")
+	}
+	return nil
+}
+
 func ValidateDepartment(s string) error {
 	switch s {
 	case "admin", "cashier", "manager":

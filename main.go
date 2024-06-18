@@ -5,6 +5,7 @@ import (
 	_ "github.com/lib/pq"
 
 	"challenge-goapi/config"
+	"challenge-goapi/customer"
 	"challenge-goapi/employee"
 	"challenge-goapi/middleware"
 )
@@ -25,6 +26,14 @@ func main() {
 			employeeGroup.POST("/", employee.CreateEmployee)
 			employeeGroup.PUT("/:id", employee.UpdateEmployee)
 			employeeGroup.DELETE("/:id", employee.DeleteEmployee)
+		}
+		customerGroup := api.Group("/customers")
+		{
+			customerGroup.GET("/", customer.GetCustomers)
+			customerGroup.GET("/:id", customer.GetCustomer)
+			customerGroup.POST("/", customer.CreateCustomer)
+			customerGroup.PUT("/:id", customer.UpdateCustomer)
+			customerGroup.DELETE("/:id", customer.DeleteCustomer)
 		}
 
 	}

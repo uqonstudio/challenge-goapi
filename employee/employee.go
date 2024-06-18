@@ -37,9 +37,15 @@ func GetEmployee(c *gin.Context) {
 
 func CreateEmployee(c *gin.Context) {
 	// Tulis kode kamu disini
+	var err error
 	var employee entity.Employee
-	err := c.BindJSON(&employee)
+	err = c.ShouldBind(&employee)
 	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err = validateEmployee(&employee); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
@@ -66,7 +72,7 @@ func UpdateEmployee(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-	err = c.BindJSON(&employee)
+	err = c.ShouldBind(&employee)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return

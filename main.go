@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 
 	"challenge-goapi/config"
+	"challenge-goapi/employee"
 	"challenge-goapi/middleware"
 )
 
@@ -19,14 +18,17 @@ func main() {
 	api := router.Group("/api")
 	{
 		api.Use(middleware.AuthMiddleware)
-		employee := api.Group("/employee")
+		employeeGroup := api.Group("/employees")
 		{
-			employee.GET("/", func(c *gin.Context) {
-				fmt.Println("employ page")
-			})
+			employeeGroup.GET("/", employee.GetEmployees)
+			employeeGroup.GET("/:id", employee.GetEmployee)
+			employeeGroup.POST("/", employee.CreateEmployee)
+			employeeGroup.PUT("/:id", employee.UpdateEmployee)
+			employeeGroup.DELETE("/:id", employee.DeleteEmployee)
 		}
 
 	}
+	router.POST("/login", employee.Login)
 	defer db.Close()
 	router.Run(":8080")
 }

@@ -51,14 +51,6 @@ func CreateBill(c *gin.Context) {
 	})
 }
 
-func GetBills(c *gin.Context) {
-
-}
-
-func GetBill(c *gin.Context) {
-
-}
-
 func validateToken(c *gin.Context) (entity.Employee, error) {
 	authHeader := c.GetHeader("Authorization")
 	tokenString := authHeader[7:] // remove "Bearer" from

@@ -48,7 +48,7 @@ func main() {
 		billGroup := api.Group("/transactions")
 		{
 			billGroup.GET("/", bill.GetBills)
-			billGroup.GET("/:id", bill.GetBill)
+			billGroup.GET("/:id_bill", bill.GetBill)
 			billGroup.POST("/", bill.CreateBill)
 		}
 

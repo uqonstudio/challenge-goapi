@@ -36,10 +36,35 @@ type BillDetails struct {
 
 type Bill struct {
 	Id         int       `json:"id"`
-	BillId     string    `json:"billData"`
+	BillId     string    `json:"billId"`
 	EntryDate  time.Time `json:"entryDate"`
 	FinishDate time.Time `json:"finishDate"`
 	Employee   int       `json:"employee"`
 	Customer   int       `json:"customer"`
 	TotalBill  int       `json:"totalBill"`
+}
+
+type Transaction struct {
+	ID          int           `json:"id"`
+	BillId      string        `json:"billDate"`
+	EntryDate   time.Time     `json:"entryDate"`
+	FinishDate  time.Time     `json:"finishDate"`
+	Employee    Employee      `json:"employee"`
+	Customer    Customer      `json:"customer"`
+	BillDetails []BillDetails `json:"billDetails"`
+	TotalBill   int           `json:"totalBill"`
+}
+
+// type Transaction struct {
+// 	Bill        Bill         `json:"bill"`
+// 	Employee    Employee     `json:"employee"`
+// 	Customer    Customer     `json:"customer"`
+// 	BillDetails []BillDetail `json:"billDetails"`
+// }
+type BillDetail struct {
+	ID           string `json:"id"`
+	BillID       string `json:"billId"`
+	Product      Product
+	ProductPrice int `json:"productPrice"`
+	Qty          int `json:"qty"`
 }

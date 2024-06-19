@@ -22,8 +22,8 @@ type CartDetails struct {
 
 type Cart struct {
 	BillId      string        `json:"billId"`
-	EntryDate   time.Time     `json:"entryDate"`
-	FinishDate  time.Time     `json:"finishDate"`
+	EntryDate   string        `json:"entryDate"`
+	FinishDate  string        `json:"finishDate"`
 	EmployeeId  int           `json:"employee"`
 	CustomerId  int           `json:"customerId"`
 	BillDetails []CartDetails `json:"billDetails"`
@@ -77,9 +77,18 @@ func performTransaction(user entity.Employee, c *gin.Context) (Cart, error) {
 		return cart, err
 	}
 
-	fmt.Printf("\nCart : %v\n", cart)
+	// fmt.Printf("\nCart : %v\n", cart)
 
 	cart.EmployeeId = user.Id // employee Id
+
+	// validate customer identity
+	customerExists, err := customerExists(cart.CustomerId)
+	if err != nil {
+		return cart, err
+	}
+	if !customerExists {
+		return cart, fmt.Errorf("customer with ID %d does not exist", cart.CustomerId)
+	}
 
 	// Perform validation on cart data
 	for _, cartDetails := range cart.BillDetails {
@@ -118,7 +127,14 @@ func performTransaction(user entity.Employee, c *gin.Context) (Cart, error) {
 		return cart, err
 	}
 	timenow := time.Now()
-	cart.EntryDate = timenow
+	// Convert EntryDate string to time.Time
+	entryDate, err := time.Parse("2006-01-02", timenow.Format("2006-01-02"))
+	if err != nil {
+		return cart, err
+	}
+
+	// Update EntryDate in Cart struct
+	cart.EntryDate = entryDate.Format("2006-01-02")
 	// create billId
 	billId = fmt.Sprintf("EL%d%d-%d%d%d%d%d-%d", cart.EmployeeId, cart.CustomerId, timenow.Year(), timenow.YearDay(), timenow.Hour(), timenow.Minute(), timenow.Second(), billNumber)
 	cart.BillId = billId
@@ -215,6 +231,16 @@ func productExists(productId int) (bool, error) {
 	query := "SELECT COUNT(*) FROM ms_products WHERE id = $1;"
 	var count int
 	err := db.QueryRow(query, productId).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+	return count > 0, nil
+}
+
+func customerExists(customerId int) (bool, error) {
+	query := "SELECT COUNT(*) FROM ms_customer WHERE id = $1;"
+	var count int
+	err := db.QueryRow(query, customerId).Scan(&count)
 	if err != nil {
 		return false, err
 	}

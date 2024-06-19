@@ -19,7 +19,7 @@ func GetProducts(c *gin.Context) {
 	var err error
 	name := c.Query("name")
 
-	query := "SELECT id, name, unit, price FROM ms_product"
+	query := "SELECT id, name, unit, price FROM ms_products"
 	if name == "" {
 		rows, err = db.Query(query)
 	} else {
@@ -68,7 +68,7 @@ func GetProduct(c *gin.Context) {
 		return
 	}
 	var product entity.Product
-	query := "SELECT id, name, price, unit FROM ms_product WHERE id = $1"
+	query := "SELECT id, name, price, unit FROM ms_products WHERE id = $1"
 	err = db.QueryRow(query, pid).Scan(&product.Id, &product.Name, &product.Price, &product.Unit)
 	if err != nil && err == sql.ErrNoRows {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -156,7 +156,7 @@ func ValidateProduct(product *entity.Product) error {
 	if err = lib.ValidateString(product.Name); err != nil {
 		return err
 	}
-	if err = lib.ValidateString(product.Unit); err != nil {
+	if err = lib.ValidateUnit(product.Unit); err != nil {
 		return err
 	}
 	if err = lib.ValidatePrice(product.Price); err != nil {

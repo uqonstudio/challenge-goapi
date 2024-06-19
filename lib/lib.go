@@ -64,9 +64,18 @@ func ValidatePhoneNumber(s string) error {
 	return nil
 }
 
+func ValidateUnit(s string) error {
+	switch s {
+	case "unit", "kg", "buah", "pasang":
+		return nil
+	default:
+		return errors.New("invalid unit")
+	}
+}
+
 func ValidateString(s string) error {
 	if len(s) < 3 {
-		return errors.New("invalid name")
+		return errors.New("invalid name " + s + "")
 	}
 	return nil
 }

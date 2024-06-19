@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 
+	"challenge-goapi/bill"
 	"challenge-goapi/config"
 	"challenge-goapi/customer"
 	"challenge-goapi/employee"
@@ -43,6 +44,12 @@ func main() {
 			productGroup.POST("/", product.CreateProduct)
 			productGroup.PUT("/:id", product.UpdateProduct)
 			productGroup.DELETE("/:id", product.DeleteProduct)
+		}
+		billGroup := api.Group("/transactions")
+		{
+			billGroup.GET("/", bill.GetBills)
+			billGroup.GET("/:id", bill.GetBill)
+			billGroup.POST("/", bill.CreateBill)
 		}
 
 	}

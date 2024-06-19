@@ -71,19 +71,32 @@ func validateToken(c *gin.Context) (entity.Employee, error) {
 func performTransaction(user entity.Employee, c *gin.Context) (Cart, error) {
 	var err error
 	var billId string
-	// var cartDetails []CartDetails
 	var cart Cart
-	// var totalBill int
 
 	if err = c.ShouldBind(&cart); err != nil {
-		fmt.Printf("\nCart : %v\n", cart)
 		return cart, err
 	}
 
 	fmt.Printf("\nCart : %v\n", cart)
 
 	cart.EmployeeId = user.Id // employee Id
-	// cartDetails = cart.BillDetails
+
+	// Perform validation on cart data
+	for _, cartDetails := range cart.BillDetails {
+		// Check if product exists
+		productExists, err := productExists(cartDetails.ProductId)
+		if err != nil {
+			return cart, err
+		}
+		if !productExists {
+			return cart, fmt.Errorf("product with ID %d does not exist", cartDetails.ProductId)
+		}
+
+		// Validate quantity
+		if cartDetails.Qty <= 0 {
+			return cart, fmt.Errorf("quantity must be greater than 0")
+		}
+	}
 
 	// transaction begin
 	tx, err := db.Begin()
@@ -196,4 +209,14 @@ func getProduct(productId int, tx *sql.Tx) (int, error) {
 	}
 	// fmt.Printf("\nPrice : %d\n", price)
 	return price, nil
+}
+
+func productExists(productId int) (bool, error) {
+	query := "SELECT COUNT(*) FROM ms_products WHERE id = $1;"
+	var count int
+	err := db.QueryRow(query, productId).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+	return count > 0, nil
 }

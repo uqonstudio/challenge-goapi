@@ -43,4 +43,14 @@ UPDATE ms_customer SET name = 'Ahmad' WHERE id = 1;
 UPDATE ms_employee SET name = 'Mirna' WHERE id = 1;
 UPDATE ms_products SET name = 'Cuci dan Strika' WHERE id = 1;
 
-
+-- Transaction
+SELECT b.billid, b.entrydate, b.finishdate, b.employee, b.customer, b.totalbill, e.name AS employee_name, e.phonenumber AS employee_phone, e.address AS employee_address, c.name AS customer_name, c.phonenumber AS customer_phone, c.address AS customer_address
+FROM tx_bill b
+JOIN ms_employee e ON b.employee = e.id
+JOIN ms_customer c ON b.customer = c.id
+WHERE 1 = 1
+AND entrydate >= '2024-06-01' AND finishdate <= '2024-06-23'
+AND EXISTS (
+    SELECT 1 FROM tx_billdetails d JOIN ms_products e ON d.product = e.id 
+    WHERE d.billid = b.billid AND name ILIKE '%cuci%');
+		

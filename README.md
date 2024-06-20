@@ -31,6 +31,40 @@ Fitur-fitur yang diminta oleh manajemen EL adalah:
 
 ## API Spec
 
+### Login 
+Request Login will return token information to access other roots.
+Request :
+- Method : `POST`
+- Endpoint : `/login`
+- Header :
+  - Content-Type : application/json
+  - Accept : application/json
+- Body :
+
+```json
+{
+    "email" : "string",
+    "password" : "string"     // hashmd5("@Emka123") = 589dbb5629b1baf681cfc3a7818fe5d5
+}
+```
+
+Response :
+
+- Status : 201 Created
+- Body :
+
+```json
+{
+    "token": "token",
+    "user": {
+        "id": "integer",
+        "name": "string",
+        "phoneNumber": "string",
+        "address": "string", 
+    }
+}
+```
+
 ### Customer API
 
 #### Create Customer
@@ -38,10 +72,14 @@ Fitur-fitur yang diminta oleh manajemen EL adalah:
 Request :
 
 - Method : `POST`
-- Endpoint : `/customers`
+- Endpoint : `/api/customers`
 - Header :
   - Content-Type : application/json
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string,
+- Query Param :
+  - name : string `optional`,
 - Body :
 
 ```json
@@ -74,9 +112,10 @@ Response :
 Request :
 
 - Method : GET
-- Endpoint : `/customers/:id`
+- Endpoint : `/api/customers/:id`
 - Header :
   - Accept : application/json
+  - Authorization : Bearer Token
 
 Response :
 
@@ -100,10 +139,12 @@ Response :
 Request :
 
 - Method : PUT
-- Endpoint : `/customers/:id`
+- Endpoint : `/api/customers/:id`
 - Header :
   - Content-Type : application/json
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string, 
 - Body :
 
 ```json
@@ -136,9 +177,11 @@ Response :
 Request :
 
 - Method : DELETE
-- Endpoint : `/customers/:id`
+- Endpoint : `/api/customers/:id`
 - Header :
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string, 
 - Body :
 
 Response :
@@ -160,17 +203,22 @@ Response :
 Request :
 
 - Method : `POST`
-- Endpoint : `/employees`
+- Endpoint : `api//employees`
 - Header :
   - Content-Type : application/json
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string, 
 - Body :
 
 ```json
 {
-  "name": "string",
-  "phoneNumber": "string",
-  "address": "string"
+  "name": "string",           
+  "email": "string",  
+  "address" :"string",        // min 3 characters
+  "phoneNumber": "string",    // length 12 characters
+  "password": "string",       // min 8 characters, min 1 uppercase, min 1 number, min 1 special character
+  "department":"string"       // "cashier", "admin", "manager"
 }
 ```
 
@@ -183,10 +231,13 @@ Response :
 {
   "message": "string",
   "data": {
-    "id": "string",
+    "id": "integer",
     "name": "string",
     "phoneNumber": "string",
-    "address": "string"
+    "address": "string",
+    "email": "string",
+    "password": "string",
+    "department": "string"
   }
 }
 ```
@@ -196,9 +247,11 @@ Response :
 Request :
 
 - Method : GET
-- Endpoint : `/employees/:id`
+- Endpoint : `api/employees/:id`
 - Header :
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string, 
 
 Response :
 
@@ -222,10 +275,12 @@ Response :
 Request :
 
 - Method : PUT
-- Endpoint : `/employees/:id`
+- Endpoint : `api/employees/:id`
 - Header :
   - Content-Type : application/json
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string, 
 - Body :
 
 ```json
@@ -258,9 +313,11 @@ Response :
 Request :
 
 - Method : DELETE
-- Endpoint : `/employees/:id`
+- Endpoint : `api/employees/:id`
 - Header :
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string, 
 - Body :
 
 Response :
@@ -282,17 +339,21 @@ Response :
 Request :
 
 - Method : POST
-- Endpoint : `/products`
+- Endpoint : `/api/products`
 - Header :
   - Content-Type : application/json
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string,
+- Query Param :
+  - name : string `optional`,
 - Body :
 
 ```json
 {
 	"name": "string",
-  "price": int,
-  "unit": "string" (satuan product,cth: Buah atau Kg)
+  "price": "integer",
+  "unit": "string" //(satuan product,cth: Buah atau Kg)
 }
 ```
 
@@ -307,8 +368,8 @@ Response :
 	"data": {
 		"id": "string",
 		"name": "string",
-		"price": int,
-		"unit": "string" (satuan product,cth: Buah atau Kg)
+		"price": "integer",
+		"unit": "string" //(satuan product,cth: Buah atau Kg)
 	}
 }
 ```
@@ -318,11 +379,13 @@ Response :
 Request :
 
 - Method : GET
-- Endpoint : `/products`
-  - Header :
+- Endpoint : `/api/products`
+- Header :
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string,
 - Query Param :
-  - productName : string `optional`,
+  - name : string `optional`, 
 
 Response :
 
@@ -336,14 +399,14 @@ Response :
 		{
 			"id": "string",
 			"name": "string",
-			"price": int,
-			"unit": "string" (satuan product,cth: Buah atau Kg)
+			"price": "integer",
+			"unit": "string" //(satuan product,cth: Buah atau Kg)
 		},
 		{
 			"id": "string",
 			"name": "string",
-			"price": int,
-			"unit": "string" (satuan product,cth: Buah atau Kg)
+			"price": "integer",
+			"unit": "string" //(satuan product,cth: Buah atau Kg)
 		}
 	]
 }
@@ -354,9 +417,11 @@ Response :
 Request :
 
 - Method : GET
-- Endpoint : `/products/:id`
+- Endpoint : `/api/products/:id`
 - Header :
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string, 
 
 Response :
 
@@ -369,8 +434,8 @@ Response :
 	"data": {
 		"id": "string",
 		"name": "string",
-		"price": int,
-		"unit": "string" (satuan product,cth: Buah atau Kg)
+		"price": "integer",
+		"unit": "string" //(satuan product,cth: Buah atau Kg)
 	}
 }
 ```
@@ -380,17 +445,19 @@ Response :
 Request :
 
 - Method : PUT
-- Endpoint : `/products/:id`
+- Endpoint : `/api/products/:id`
 - Header :
   - Content-Type : application/json
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string, 
 - Body :
 
 ```json
 {
 	"name": "string",
-	"price": int,
-	"unit": "string" (satuan product,cth: Buah atau Kg)
+	"price": "integer",
+	"unit": "string" //(satuan product,cth: Buah atau Kg)
 }
 ```
 
@@ -405,8 +472,8 @@ Response :
 	"data": {
 		"id": "string",
 		"name": "string",
-		"price": int,
-		"unit": "string" (satuan product,cth: Buah atau Kg)
+		"price": "int",
+		"unit": "string" //(satuan product,cth: Buah atau Kg)
 	}
 }
 ```
@@ -416,9 +483,11 @@ Response :
 Request :
 
 - Method : DELETE
-- Endpoint : `/products/:id`
+- Endpoint : `/api/products/:id`
 - Header :
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string, 
 - Body :
 
 Response :
@@ -444,19 +513,21 @@ Request :
 - Header :
   - Content-Type : application/json
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string, 
 - Body :
 
 ```json
 {
-	"billDate": "string",
-	"entryDate": "string",
-	"finishDate": "string",
-	"employeeId": "string",
+	"billId": "string",      // kosongkan, otomatis digenerate)
+	"entryDate": "string",   // kosongkan, otomatis digunakan current date)
+	"finishDate": "string",  //(gunakan format "yyyy-mm-dd'T'HH:mm" exp:. 2024-06-20)
+	"employeeId": "string",  // kosongkan, employee id diambil dari token (claims[uid])
 	"customerId": "string",
 	"billDetails": [
 		{
 			"productId": "string",
-			"qty": int
+			"qty": "integer",
 		}
 	]
 }
@@ -482,8 +553,8 @@ Request :
 				"id":	"string",
 				"billId":  "string",
 				"productId":  "string",
-				"productPrice": int,
-				"qty": int
+				"productPrice": "int",
+				"qty": "int"
 			}
 		]
 	}
@@ -495,9 +566,11 @@ Request :
 Request :
 
 - Method : GET
-- Endpoint : `/transactions/:id_bill`
+- Endpoint : `api/transactions/:id_bill`
 - Header :
   - Accept : application/json
+  - Authorization : 
+    - Bearer Token : string, 
 - Body :
 
 Response :
@@ -532,26 +605,26 @@ Response :
         "product": {
           "id": "string",
           "name": "string",
-          "price": int,
-          "unit": "string" (satuan product,cth: Buah atau Kg)
+          "price": "int",
+          "unit": "string" //(satuan product,cth: Buah atau Kg)
         },
-        "productPrice": int,
-        "qty": int
+        "productPrice": "int",
+        "qty": "int"
       }
     ],
-    "totalBill": int
+    "totalBill": "int"
   }
 }
 ```
 
 #### List Transaction
 
-Pattern string date : `dd-MM-yyyy`
+Pattern string date : `yyyy-MM-dd`
 
 Request :
 
 - Method : GET
-- Endpoint : `/transactions`
+- Endpoint : `api/transactions`
 - Header :
   - Accept : application/json
 - Query Param :
@@ -593,14 +666,14 @@ Response :
           "product": {
             "id": "string",
             "name": "string",
-            "price": int,
-            "unit": "string" (satuan product,cth: Buah atau Kg)
+            "price": "int",
+            "unit": "string" //(satuan product,cth: Buah atau Kg)
           },
-          "productPrice": int,
-          "qty": int
+          "productPrice": "int",
+          "qty": "int"
         }
       ],
-      "totalBill": int
+      "totalBill": "int"
     }
   ]
 }

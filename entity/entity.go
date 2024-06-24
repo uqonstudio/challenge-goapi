@@ -1,5 +1,10 @@
 package entity
 
+type Login struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
 type Employee struct {
 	Id          int    `json:"id"`
 	Name        string `json:"name"`
@@ -53,12 +58,6 @@ type Transaction struct {
 	TotalBill   int           `json:"totalBill"`
 }
 
-// type Transaction struct {
-// 	Bill        Bill         `json:"bill"`
-// 	Employee    Employee     `json:"employee"`
-// 	Customer    Customer     `json:"customer"`
-// 	BillDetails []BillDetail `json:"billDetails"`
-// }
 type BillDetail struct {
 	ID           string `json:"id"`
 	BillID       string `json:"billId"`

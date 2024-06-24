@@ -8,14 +8,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// var db = config.ConnectDB()
-// type Billing struct {
-// 	bill        entity.Bill
-// 	employee    entity.Employee
-// 	customer    entity.Customer
-// 	billDetails []entity.BillDetails
-// }
-
+// @Summary List all transactions
+// @Description Retrieve a list of all transactions
+// @Accept json
+// @Produce json
+// @Param startDate query string false "Filter by start date"
+// @Param endDate query string false "Filter by end date"
+// @Param productName query string false "Filter by product name"
+// @Success 200 {object} entity.Transaction "Transaction data"
+// @Failure 400
+// @Tags Transactions
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Router /transactions [get]
 func GetBills(c *gin.Context) {
 	startDate := c.Query("startDate")
 	endDate := c.Query("endDate")
@@ -118,6 +123,18 @@ func GetBills(c *gin.Context) {
 	}
 }
 
+// @Summary Get bill by ID
+// @Description Retrieve a specific bill by its ID
+// @Accept json
+// @Produce json
+// @Param id_bill path string true "Bill ID"
+// @Success 200 {object} entity.Transaction "Bill data"
+// @Failure 400
+// @Failure 404
+// @Tags Transactions
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Router /transactions/{id_bill} [get]
 func GetBill(c *gin.Context) {
 
 	idBill := c.Param("id_bill")
@@ -170,7 +187,6 @@ func GetBill(c *gin.Context) {
 
 }
 
-// get bill details from database based on billId
 func getBillDetails(billId string) ([]entity.BillDetails, error) {
 	var billDetails []entity.BillDetails
 	query := "SELECT billid, product, productprice, qty FROM tx_billdetails WHERE billid = $1"

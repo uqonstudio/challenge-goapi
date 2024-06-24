@@ -10,16 +10,45 @@ import (
 	"challenge-goapi/employee"
 	"challenge-goapi/middleware"
 	"challenge-goapi/product"
+
+	docs "challenge-goapi/docs"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 var db = config.ConnectDB()
 
+// @title Laundry API Documentation
+// @version 1.0
+// @description A documentation how to access the api's routes on your laundry application
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url https://uqonstd.xyz/
+// @contact.email sdesain25@gmail.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8080
+// @BasePath /api/v1
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
+
 func main() {
 	// Tulis kode kamu disini
 	router := gin.Default()
+	docs.SwaggerInfo.BasePath = "/api/v1"
+	// Generate Swagger documentation
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	router.Use(middleware.LoggerMiddleware)
-	api := router.Group("/api")
+	api := router.Group("/api/v1")
 	{
+		api.POST("/login", employee.Login)
 		api.Use(middleware.AuthMiddleware)
 		employeeGroup := api.Group("/employees")
 		{
@@ -53,7 +82,6 @@ func main() {
 		}
 
 	}
-	router.POST("/login", employee.Login)
 	defer db.Close()
 	router.Run(":8080")
 }

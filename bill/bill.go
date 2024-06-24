@@ -32,6 +32,18 @@ type Cart struct {
 
 var db = config.ConnectDB()
 
+// @Summary Create a new bill
+// @Description Create a new bill with the provided cart details
+// @Accept json
+// @Produce json
+// @Param body body Cart true "Cart data"
+// @Success 200 {object} Cart "Cart data"
+// @Failure 400
+// @Failure 401
+// @Tags Transactions
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Router /transactions [post]
 func CreateBill(c *gin.Context) {
 	var bill Cart
 	user, err := validateToken(c)

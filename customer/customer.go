@@ -13,6 +13,17 @@ import (
 
 var db = config.ConnectDB()
 
+// @Summary Get Customers
+// @Description Retrieve a list of customers
+// @Accept json
+// @Produce json
+// @Param name query string false "Filter by customer name"
+// @Success 200
+// @Failure 400
+// @Tags Customers
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Router /customers [get]
 func GetCustomers(c *gin.Context) {
 	var customers []entity.Customer
 	name := c.Query("name")
@@ -61,6 +72,17 @@ func GetCustomers(c *gin.Context) {
 	}
 }
 
+// @Summary Get Customer by ID
+// @Description Retrieve a customer by ID
+// @Accept json
+// @Produce json
+// @Param id path int true "Customer ID"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Tags Customers
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Router /customers/{id} [get]
 func GetCustomer(c *gin.Context) {
 	cid, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -81,6 +103,17 @@ func GetCustomer(c *gin.Context) {
 	})
 }
 
+// @Summary Create Customer
+// @Description Create a new customer
+// @Accept json
+// @Produce json
+// @Param customer body entity.Customer true "Customer data"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Tags Customers
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Router /customers [post]
 func CreateCustomer(c *gin.Context) {
 	var customer entity.Customer
 	var err error
@@ -109,6 +142,18 @@ func CreateCustomer(c *gin.Context) {
 
 }
 
+// @Summary Update Customer
+// @Description Update an existing customer
+// @Accept json
+// @Produce json
+// @Param id path int true "Customer ID"
+// @Param customer body entity.Customer true "Customer data"
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Tags Customers
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Router /customers/{id} [put]
 func UpdateCustomer(c *gin.Context) {
 	var err error
 	var customer entity.Customer
@@ -143,6 +188,17 @@ func UpdateCustomer(c *gin.Context) {
 	})
 }
 
+// @Summary Delete Customer
+// @Description Delete an existing customer
+// @Accept json
+// @Produce json
+// @Param id path int true "Customer ID"
+// @Success 200 {string} string "customer successfully deleted"
+// @Failure 400 {string} string "error"
+// @Tags Customers
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Router /customers/{id} [delete]
 func DeleteCustomer(c *gin.Context) {
 	var err error
 	cid, err := strconv.Atoi(c.Param("id"))

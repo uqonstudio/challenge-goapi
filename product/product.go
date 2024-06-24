@@ -13,6 +13,17 @@ import (
 
 var db = config.ConnectDB()
 
+// @Summary Get all products
+// @Description Retrieve a list of all products
+// @Produce json
+// @Param name query string false "Product name"
+// @Security ApiKeyAuth
+// @Success 200
+// @Failure 400 {string} string "error"
+// @Tags Products
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Router /products [get]
 func GetProducts(c *gin.Context) {
 	var products []entity.Product
 	var rows *sql.Rows
@@ -60,6 +71,16 @@ func GetProducts(c *gin.Context) {
 
 }
 
+// @Summary Get product by id
+// @Description Retrieve a product by id
+// @Produce json
+// @Param id path int true "Product id"
+// @Success 200
+// @Failure 400
+// @Tags Products
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Router /products/{id} [get]
 func GetProduct(c *gin.Context) {
 	var err error
 	pid, err := strconv.Atoi(c.Param("id"))
@@ -81,6 +102,17 @@ func GetProduct(c *gin.Context) {
 	})
 }
 
+// @Summary Create product
+// @Description Create a new product
+// @Accept  json
+// @Produce  json
+// @Param product body entity.Product true "Product data"
+// @Success 200
+// @Failure 400
+// @Tags Products
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Router /products [post]
 func CreateProduct(c *gin.Context) {
 	var product entity.Product
 	var err error
@@ -104,6 +136,18 @@ func CreateProduct(c *gin.Context) {
 	})
 }
 
+// @Summary Update product
+// @Description Update a product
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Product id"
+// @Param product body entity.Product true "Product data"
+// @Success 200
+// @Failure 400
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Tags Products
+// @Router /products/{id} [put]
 func UpdateProduct(c *gin.Context) {
 	var err error
 	var product entity.Product
@@ -132,6 +176,16 @@ func UpdateProduct(c *gin.Context) {
 	})
 }
 
+// @Summary Delete product
+// @Description Delete a product
+// @Produce json
+// @Param id path int true "Product id"
+// @Success 200
+// @Failure 400
+// @Security ApiKeyAuth
+// @param Authorization header string true "Authorization" default(Bearer <Add access token here>)
+// @Tags Products
+// @Router /products/{id} [delete]
 func DeleteProduct(c *gin.Context) {
 	var err error
 	pid, err := strconv.Atoi(c.Param("id"))

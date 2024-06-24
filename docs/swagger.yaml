@@ -1,0 +1,726 @@
+basePath: /api/v1
+definitions:
+  bill.Cart:
+    properties:
+      billDetails:
+        items:
+          $ref: '#/definitions/bill.CartDetails'
+        type: array
+      billId:
+        type: string
+      customerId:
+        type: integer
+      employee:
+        type: integer
+      entryDate:
+        type: string
+      finishDate:
+        type: string
+      totalBill:
+        type: integer
+    type: object
+  bill.CartDetails:
+    properties:
+      billId:
+        type: string
+      price:
+        type: integer
+      productId:
+        type: integer
+      qty:
+        type: integer
+      subTotal:
+        type: integer
+    type: object
+  entity.BillDetails:
+    properties:
+      billId:
+        type: string
+      id:
+        type: integer
+      product:
+        type: integer
+      productPrice:
+        type: integer
+      qty:
+        type: integer
+    type: object
+  entity.Customer:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phoneNumber:
+        type: string
+    type: object
+  entity.Employee:
+    properties:
+      address:
+        type: string
+      department:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      phoneNumber:
+        type: string
+    type: object
+  entity.Login:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  entity.Product:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: integer
+      unit:
+        type: string
+    type: object
+  entity.Transaction:
+    properties:
+      billDate:
+        type: string
+      billDetails:
+        items:
+          $ref: '#/definitions/entity.BillDetails'
+        type: array
+      customer:
+        $ref: '#/definitions/entity.Customer'
+      employee:
+        $ref: '#/definitions/entity.Employee'
+      entryDate:
+        type: string
+      finishDate:
+        type: string
+      id:
+        type: integer
+      totalBill:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: sdesain25@gmail.com
+    name: API Support
+    url: https://uqonstd.xyz/
+  description: A documentation how to access the api's routes on your laundry application
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Laundry API Documentation
+  version: "1.0"
+paths:
+  /customers:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of customers
+      parameters:
+      - description: Filter by customer name
+        in: query
+        name: name
+        type: string
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      security:
+      - ApiKeyAuth: []
+      summary: Get Customers
+      tags:
+      - Customers
+    post:
+      consumes:
+      - application/json
+      description: Create a new customer
+      parameters:
+      - description: Customer data
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Customer'
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Create Customer
+      tags:
+      - Customers
+  /customers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing customer
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: customer successfully deleted
+          schema:
+            type: string
+        "400":
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Customer
+      tags:
+      - Customers
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a customer by ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get Customer by ID
+      tags:
+      - Customers
+    put:
+      consumes:
+      - application/json
+      description: Update an existing customer
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Customer data
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Customer'
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update Customer
+      tags:
+      - Customers
+  /employees:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all employees
+      parameters:
+      - description: Filter by employee name
+        in: query
+        name: name
+        type: string
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Employee data
+          schema:
+            $ref: '#/definitions/entity.Employee'
+        "400":
+          description: Bad Request
+      security:
+      - ApiKeyAuth: []
+      summary: List all employees
+      tags:
+      - Employees
+    post:
+      consumes:
+      - application/json
+      description: Add a new employee to the database
+      parameters:
+      - description: Employee data
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Employee'
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Employee data
+          schema:
+            items:
+              $ref: '#/definitions/entity.Employee'
+            type: array
+        "400":
+          description: Bad Request
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new employee
+      tags:
+      - Employees
+  /employees/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove an employee from the database
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Employee data
+          schema:
+            $ref: '#/definitions/entity.Employee'
+        "400":
+          description: Bad Request
+      security:
+      - ApiKeyAuth: []
+      summary: Delete an employee
+      tags:
+      - Employees
+    get:
+      description: Retrieve employee data by ID
+      operationId: id
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Employee data
+          schema:
+            $ref: '#/definitions/entity.Employee'
+        "400":
+          description: Bad Request
+      security:
+      - Bearer: []
+      - ApiKeyAuth: []
+      summary: Get employee by ID
+      tags:
+      - Employees
+    put:
+      consumes:
+      - application/json
+      description: Update the details of an existing employee in the database
+      parameters:
+      - description: Employee ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Employee data
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Employee'
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Employee data
+          schema:
+            $ref: '#/definitions/entity.Employee'
+        "400":
+          description: Bad Request
+      security:
+      - ApiKeyAuth: []
+      summary: Update an existing employee
+      tags:
+      - Employees
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 'Authenticate an employee and generate a token exp:. email : pegi@gmail.com,
+        password: @Emka123'
+      parameters:
+      - description: Login data
+        in: body
+        name: employee
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Login'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: token
+          schema:
+            $ref: '#/definitions/entity.Employee'
+        "400":
+          description: Bad Request
+      summary: Login an employee
+      tags:
+      - Auth Token
+  /products:
+    get:
+      description: Retrieve a list of all products
+      parameters:
+      - description: Product name
+        in: query
+        name: name
+        type: string
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      - ApiKeyAuth: []
+      summary: Get all products
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      description: Create a new product
+      parameters:
+      - description: Product data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Product'
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      security:
+      - ApiKeyAuth: []
+      summary: Create product
+      tags:
+      - Products
+  /products/{id}:
+    delete:
+      description: Delete a product
+      parameters:
+      - description: Product id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      security:
+      - ApiKeyAuth: []
+      summary: Delete product
+      tags:
+      - Products
+    get:
+      description: Retrieve a product by id
+      parameters:
+      - description: Product id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      security:
+      - ApiKeyAuth: []
+      summary: Get product by id
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      description: Update a product
+      parameters:
+      - description: Product id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Product'
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+      security:
+      - ApiKeyAuth: []
+      summary: Update product
+      tags:
+      - Products
+  /transactions:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all transactions
+      parameters:
+      - description: Filter by start date
+        in: query
+        name: startDate
+        type: string
+      - description: Filter by end date
+        in: query
+        name: endDate
+        type: string
+      - description: Filter by product name
+        in: query
+        name: productName
+        type: string
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Transaction data
+          schema:
+            $ref: '#/definitions/entity.Transaction'
+        "400":
+          description: Bad Request
+      security:
+      - ApiKeyAuth: []
+      summary: List all transactions
+      tags:
+      - Transactions
+    post:
+      consumes:
+      - application/json
+      description: Create a new bill with the provided cart details
+      parameters:
+      - description: Cart data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/bill.Cart'
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Cart data
+          schema:
+            $ref: '#/definitions/bill.Cart'
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new bill
+      tags:
+      - Transactions
+  /transactions/{id_bill}:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a specific bill by its ID
+      parameters:
+      - description: Bill ID
+        in: path
+        name: id_bill
+        required: true
+        type: string
+      - default: Bearer <Add access token here>
+        description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Bill data
+          schema:
+            $ref: '#/definitions/entity.Transaction'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+      security:
+      - ApiKeyAuth: []
+      summary: Get bill by ID
+      tags:
+      - Transactions
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

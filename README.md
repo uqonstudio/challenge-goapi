@@ -1,8 +1,8 @@
-# Aplikasi Enigma Laundry
+# Aplikasi EL Laundry
 
 ### Deskripsi
 
-aplikasi sederhana berbasis API untuk mencatat transaksi di toko EL.
+EL Laundry adalah toko penyedia jasa laundry, dalam mempermudah proses transaksi maka diperlukan aplikasi sederhana berbasis API untuk mencatat transaksi di tokonya, yang akan diintegrasikan dengan aplikasi frontend berbasis web.
 
 ![logo](./asset/ELapi.png)
 
